@@ -317,56 +317,50 @@ with tab1:
         return fig
 
 
-    match genre:
-
-        case 'По полу':
-
-            st.plotly_chart(plot_dependants('gender_desc', 'Пол'))
-
-        case 'По уровню образования':
-            st.plotly_chart(plot_dependants('education', 'Уровень образования'), use_container_width=True)
-
-        case 'По семейному положению':
+    if genre == 'По полу':
+        st.plotly_chart(plot_dependants('gender_desc', 'Пол'))
+    elif genre == 'По уровню образования':
+        st.plotly_chart(plot_dependants('education', 'Уровень образования'), use_container_width=True)
+    elif genre == 'По семейному положению':
             st.plotly_chart(plot_dependants('marital_status', 'Семейное положение'), use_container_width=True)
-        
-        case 'По возрасту':
-            fig = (
-                px.scatter(
-                    data_frame=(
-                        clients_extended
-                        .rename({
-                            'dependants': 'Количество иждивенцев',
-                            'child_total': 'Количество детей'
-                        },
-                        axis=1
-                        )
-                    ),
-                    x='age',
-                    y='Количество детей',
-                    # color='gender_desc',
-                    template='simple_white',
-                    color_discrete_sequence=color_sequence,
-                    # labels={
-                    #     'gender_desc': 'Пол',
-                    # }
-                )
-                .update_layout(
-                    xaxis_title_text = 'Возраст', 
-                    yaxis_title_text = 'Количество детей',
-                    legend={
-                        # 'yanchor': "bottom",
-                        # 'xanchor': "right",
-                        'y': 0.99,
-                        'x': 0.90
+    elif genre ==  'По возрасту':
+        fig = (
+            px.scatter(
+                data_frame=(
+                    clients_extended
+                    .rename({
+                        'dependants': 'Количество иждивенцев',
+                        'child_total': 'Количество детей'
                     },
-                    xaxis = {
-                        'tickmode': 'linear',
-                        'dtick': 5
-                    }
-                )
+                    axis=1
+                    )
+                ),
+                x='age',
+                y='Количество детей',
+                # color='gender_desc',
+                template='simple_white',
+                color_discrete_sequence=color_sequence,
+                # labels={
+                #     'gender_desc': 'Пол',
+                # }
             )
+            .update_layout(
+                xaxis_title_text = 'Возраст', 
+                yaxis_title_text = 'Количество детей',
+                legend={
+                    # 'yanchor': "bottom",
+                    # 'xanchor': "right",
+                    'y': 0.99,
+                    'x': 0.90
+                },
+                xaxis = {
+                    'tickmode': 'linear',
+                    'dtick': 5
+                }
+            )
+        )
 
-            st.plotly_chart(fig, use_container_width=True)
+        st.plotly_chart(fig, use_container_width=True)
         
     
     st.write('''
